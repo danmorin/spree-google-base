@@ -9,7 +9,7 @@ module SpreeGoogleBase
     def self.generate_and_transfer
       builders = if defined?(Spree::Store)
         Spree::Store.map do |store|
-          self.new(store)
+          self.new(:store => store)
         end
       else
         [self.new]
@@ -72,8 +72,12 @@ module SpreeGoogleBase
     
     def build_product(xml, product)
       xml.item do
-        xml.tag!('link', product_path(product.permalink, :host => domain))
-        xml.tag!('g:image_link', "#{domain}/" + product.images[0].attachment.url(:large)) if product.images.any?
+        xml.tag!('link', product_url(product.permalink, :host => domain))
+        if product.images.any?
+          image_url = product.images[0].attachment.url(:large)
+          image_url = "http://#{domain}#{image_url}" unless image_url[0..3] == 'http'
+          xml.tag!('g:image_link', image_url)
+        end
         
         SpreeGoogleBase::Engine::GOOGLE_BASE_ATTR_MAP.each do |k, v|
           next unless product.respond_to?(v)
