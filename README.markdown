@@ -23,7 +23,7 @@ INSTALLATION
 
 4. Set preferences in spree admin panel (/admin/google_base_settings) for the feed title, public domain, feed description, ftp login and password. FTP login is not required - you may schedule upload from the public directory.
 
-5. Issue the command 'rake spree_google_base:generate' to generate feed. Verify feed exists (YOUR_APP_ROOT/public/google_base.xml).
+5. Issue the command 'rake spree_google_base:generate_and_transfer' to generate feed. Verify feed exists (YOUR_APP_ROOT/tmp/google_base_v.xml).
 
 
 ADVANCED CONFIGURATION
