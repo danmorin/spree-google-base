@@ -19,15 +19,20 @@ module SpreeGoogleBase
     initializer "spree_google_base.attr_map" do |app|
       # See http://base.google.com/support/bin/answer.py?hl=en&answer=78170 for all other fields
       GOOGLE_BASE_ATTR_MAP = [
-        ['g:id', 'id'],
-        ['g:mpn', 'sku'],
-        ['title', 'name'],
+        ['g:id', 'google_base_id'],
+        ['g:item_group_id', 'google_base_group_id'],
+        ['g:mpn', 'v_or_p_sku'],
+        ['title', 'google_base_name'],
         ['description', 'google_base_description'],
         ['g:price', 'price'],
         ['g:condition', 'google_base_condition'],
-        ['google_product_category', 'google_base_product_type'],
+        ['g:google_product_category', 'google_base_product_type'],
         ['g:brand', 'google_base_brand'],
-        ['g:quantity','on_hand']
+        ['g:quantity','on_hand'],
+        ['g:color','google_base_color'],
+        ['g:size','google_base_size'],
+        ['g:gender', 'google_base_gender'],
+        ['g:age_group', 'google_base_age_group']
       ]
     end
   end

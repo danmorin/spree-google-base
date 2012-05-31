@@ -87,6 +87,38 @@ module SpreeGoogleBase
       end
     end
     
+    def build_item(xml, product)
+      variants = product.variants.size > 0 ? product.variants : [product.master]
+      variants.each do |variant|
+        next if variant.on_hand <= 0
+        xml.item do
+          xml.tag!('link', product_url(product.permalink, :host => domain))
+          
+          build_images(xml, variant)
+        
+          SpreeGoogleBase::Engine::GOOGLE_BASE_ATTR_MAP.each do |k, v|
+            next unless variant.respond_to?(v)
+            value = variant.send(v)
+            xml.tag!(k, value.to_s) if value.present?
+          end
+        
+        end
+      end
+    end
+    
+    def build_images(xml, variant)
+      images = variant.is_master? ? variant.product.images : variant.images
+      images.each_with_index do |image, index|
+        image_url = image.attachment.url(:large)
+        image_url = "http://#{domain}#{image_url}" unless image_url[0..3] == 'http'
+        if index == 0
+          xml.tag!('g:image_link', image_url)
+        else
+          xml.tag!('g:additional_image_link', image_url)
+        end
+      end
+    end
+    
     def build_meta(xml)
       xml.title @title
       xml.link @domain
@@ -98,7 +130,8 @@ module SpreeGoogleBase
         build_meta(xml)
         
         scope.each do |product|
-          build_product(xml, product)
+          # build_product(xml, product)
+          build_item(xml, product)
         end
       end
       
