@@ -1,0 +1,15 @@
+div#google_base_map h1 { margin: 10px 0px; }
+div#google_base_map div.headers { font-size: 1.2em; font-weight: bold; }
+div#google_base_map p { margin: 5px 0px; clear: both; }
+div#google_base_map input.category { margin: 0px 10px; width: 450px; }
+div#google_base_map input.priority { margin: 0px 40px 0px 10px; width: 30px; }
+
+div#google_base_map {
+  .priority_head {
+    width: 45px;
+  }
+  
+  td {
+    border-bottom: 1px solid #ccc;
+  }
+}

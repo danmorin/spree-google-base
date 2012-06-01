@@ -1,7 +1,7 @@
 class Spree::Admin::TaxonMapController < Spree::Admin::ResourceController
 
   def index
-    @taxons = Spree::Taxon.find(:all)
+    @taxons = Spree::Taxon.includes(:taxon_map).order(:id).all
     @taxons.each do |taxon|
       if !taxon.taxon_map
         taxon_map = Spree::TaxonMap.new(:product_type => '', :taxon_id => taxon.id, :priority => 0)
