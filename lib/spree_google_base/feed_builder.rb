@@ -172,7 +172,7 @@ module SpreeGoogleBase
         
         puts "Total Products: #{scope.count}"
         
-        scope.each do |product|
+        scope.find_each do |product|
           # build_product(xml, product)
           build_item(xml, product)
           print "."
