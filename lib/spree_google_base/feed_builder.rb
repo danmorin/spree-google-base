@@ -34,8 +34,13 @@ module SpreeGoogleBase
     end
     
     def generate_and_transfer_store
+      puts "Generating XML"
       generate_xml
+      
+      puts "Transfering XML"
       transfer_xml
+      
+      puts "Cleaning Up XML"
       cleanup_xml
     end
     
@@ -165,10 +170,15 @@ module SpreeGoogleBase
       xml.channel do
         build_meta(xml)
         
+        puts "Total Products: #{scope.count}"
+        
         scope.each do |product|
           # build_product(xml, product)
           build_item(xml, product)
+          print "."
         end
+        
+        puts "\n Done"
       end
       
       xml
