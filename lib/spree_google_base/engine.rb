@@ -33,7 +33,8 @@ module SpreeGoogleBase
         ['g:size','google_base_size'],
         ['g:gender', 'google_base_gender'],
         ['g:age_group', 'google_base_age_group'],
-        ['g:availability', 'google_base_availability']
+        ['g:availability', 'google_base_availability'],
+        ['g:brand', 'google_base_brand']
       ]
     end
   end

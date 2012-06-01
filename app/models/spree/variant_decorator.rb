@@ -64,5 +64,9 @@ module Spree
       option_value.present? ? option_value.presentation : nil
     end
     
+    def google_base_brand
+      brand
+    end
+    
   end
 end
