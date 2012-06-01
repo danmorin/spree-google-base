@@ -67,7 +67,7 @@ module SpreeGoogleBase
       ftp = Net::FTP.new('uploads.google.com')
       ftp.passive = true
       ftp.login(Spree::GoogleBase::Config[:ftp_username], Spree::GoogleBase::Config[:ftp_password])
-      ftp.put(path, "google_base.xml")
+      ftp.put(path, "google_base_#{Rails.env}.xml")
       ftp.quit
     end
     
