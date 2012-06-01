@@ -45,7 +45,7 @@ module SpreeGoogleBase
     end
     
     def path
-      "#{::Rails.root}/tmp/google_base_v#{@store.try(:code)}.xml"
+      "#{::Rails.root}/tmp/google_base_v#{@store.try(:code)}_#{Rails.env}.xml"
     end
     
     def generate_xml
