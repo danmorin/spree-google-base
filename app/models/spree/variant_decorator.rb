@@ -29,6 +29,10 @@ module Spree
       "Adult"
     end
     
+    def google_base_availability
+      on_hand > 0 ? 'in stock' : 'out of stock'
+    end
+    
     def google_base_image
       if self.is_master?
         product.images.first

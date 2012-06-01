@@ -32,7 +32,8 @@ module SpreeGoogleBase
         ['g:color','google_base_color'],
         ['g:size','google_base_size'],
         ['g:gender', 'google_base_gender'],
-        ['g:age_group', 'google_base_age_group']
+        ['g:age_group', 'google_base_age_group'],
+        ['g:availability', 'google_base_availability']
       ]
     end
   end

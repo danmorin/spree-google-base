@@ -45,10 +45,10 @@ module SpreeGoogleBase
     
     def generate_xml
       results =
-      "<?xml version=\"1.0\"?>
-      <rss version=\"2.0\" xmlns:g=\"http://base.google.com/ns/1.0\">
-      #{build_xml}
-      </rss>"
+"<?xml version=\"1.0\"?>
+<rss version=\"2.0\" xmlns:g=\"http://base.google.com/ns/1.0\">
+  #{build_xml}
+</rss>"
       
       File.open(path, "w") do |io|
         io.puts(results)
@@ -70,22 +70,22 @@ module SpreeGoogleBase
       File.delete(path)
     end
     
-    def build_product(xml, product)
-      xml.item do
-        xml.tag!('link', product_url(product.permalink, :host => domain))
-        if product.images.any?
-          image_url = product.images[0].attachment.url(:large)
-          image_url = "http://#{domain}#{image_url}" unless image_url[0..3] == 'http'
-          xml.tag!('g:image_link', image_url)
-        end
-        
-        SpreeGoogleBase::Engine::GOOGLE_BASE_ATTR_MAP.each do |k, v|
-          next unless product.respond_to?(v)
-          value = product.send(v)
-          xml.tag!(k, value.to_s) if value.present?
-        end
-      end
-    end
+    # def build_product(xml, product)
+    #   xml.item do
+    #     xml.tag!('link', product_url(product.permalink, :host => domain))
+    #     if product.images.any?
+    #       image_url = product.images[0].attachment.url(:large)
+    #       image_url = "http://#{domain}#{image_url}" unless image_url[0..3] == 'http'
+    #       xml.tag!('g:image_link', image_url)
+    #     end
+    #     
+    #     SpreeGoogleBase::Engine::GOOGLE_BASE_ATTR_MAP.each do |k, v|
+    #       next unless product.respond_to?(v)
+    #       value = product.send(v)
+    #       xml.tag!(k, value.to_s) if value.present?
+    #     end
+    #   end
+    # end
     
     def build_item(xml, product)
       variants = product.variants.size > 0 ? product.variants : [product.master]
@@ -93,15 +93,14 @@ module SpreeGoogleBase
         next if variant.on_hand <= 0
         xml.item do
           xml.tag!('link', product_url(product.permalink, :host => domain))
-          
-          build_images(xml, variant)
-        
           SpreeGoogleBase::Engine::GOOGLE_BASE_ATTR_MAP.each do |k, v|
             next unless variant.respond_to?(v)
             value = variant.send(v)
             xml.tag!(k, value.to_s) if value.present?
           end
-        
+          build_images(xml, variant)
+          build_tax(xml, variant)
+          build_ship(xml, variant)
         end
       end
     end
@@ -116,6 +115,43 @@ module SpreeGoogleBase
         else
           xml.tag!('g:additional_image_link', image_url)
         end
+      end
+    end
+    
+    # <g:tax>
+    #    <g:country>US</g:country>
+    #    <g:region>MA</g:region>
+    #    <g:rate>5.00</g:rate>
+    #    <g:tax_ship>y</g:tax_ship>
+    # </g:tax>
+    def build_tax(xml, variant)
+      boutique = variant.product.boutique
+      boutique.tax_rates.each do |tax_rate|
+        next unless tax_rate.zone && tax_rate.zone.members.size > 0
+        zone_member = tax_rate.zone.members.first
+        next unless zone_member.zoneable_type == "Spree::State"
+        state = zone_member.zoneable
+        
+        xml.tag!('g:tax') do
+          xml.tag!('g:country', 'US')
+          xml.tag!('g:region', state.abbr)
+          xml.tag!('g:rate', tax_rate.amount * 100.0)
+        end
+      end
+    end
+    
+    # <g:shipping>
+    #    <g:country>US</g:country>
+    #    <g:region>MA</g:region>
+    #    <g:service>Ground</g:service>
+    #    <g:price>6.49 USD</g:price>
+    # </g:shipping>
+    def build_ship(xml, variant)
+      amount = variant.price > 100 ? "0.0 USD" : "9.21 USD"
+      xml.tag!('g:shipping') do
+        xml.tag!('g:country', 'US')
+        xml.tag!('g:service', 'Ground')
+        xml.tag!('g:price', amount)
       end
     end
     
