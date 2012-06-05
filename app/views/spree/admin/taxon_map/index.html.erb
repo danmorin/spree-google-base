@@ -12,11 +12,17 @@
         </tr>
       </thead>
       <% @taxons.each do |taxon| -%>
-        <tr>
-          <td class="taxon"><label><%= taxon.name %></label></td>
-          <td class="priority"><%= text_field(:priority, taxon.id, :value => taxon.taxon_map.priority.to_s, :class => 'priority') %></td>
-          <td class="category"><%= text_field(:tax_id, taxon.id, :value => taxon.taxon_map.product_type, :class => 'category') %></td>
-        </tr>
+        <%= fields_for "taxon_map[]", taxon.taxon_map do |builder| %>
+          <tr>
+            <td class="taxon"><label><%= taxon.name %></label></td>
+            <td class="priority">
+              <%= builder.text_field(:priority, :class => 'priority') %>
+            </td>
+            <td class="category">
+              <%= builder.text_field(:product_type, :class => 'category') %>
+            </td>
+          </tr>
+        <% end %>
       <% end %>
     </table>
     <%= submit_tag 'Update' %>
