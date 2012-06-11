@@ -4,7 +4,8 @@
 
 <%= form_tag(admin_google_base_settings_path, :method => :put) do |f| %>
   <% [:title, :public_domain, :description, :ftp_username, 
-      :ftp_password, :enable_taxon_mapping].each do |setting| %>
+      :ftp_password, :enable_taxon_mapping, :campaign_source, :campaign_medium, 
+      :campaign_term, :campaign_content, :campaign_name].each do |setting| %>
     <p><%= setting_field(setting) %></p>
   <% end %>
 

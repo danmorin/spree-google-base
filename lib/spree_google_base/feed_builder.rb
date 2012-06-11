@@ -97,7 +97,7 @@ module SpreeGoogleBase
       variants.each do |variant|
         next if variant.on_hand <= 0
         xml.item do
-          xml.tag!('link', product_url(product.permalink, :host => domain))
+          xml.tag!('link', product_url(product.permalink, {:host => domain}.merge(url_tracking_params)))
           SpreeGoogleBase::Engine::GOOGLE_BASE_ATTR_MAP.each do |k, v|
             next unless variant.respond_to?(v)
             value = variant.send(v)
@@ -108,6 +108,18 @@ module SpreeGoogleBase
           build_ship(xml, variant)
         end
       end
+    end
+    
+    def url_tracking_params
+      params = {}
+      
+      params[:utm_source]   = Spree::GoogleBase::Config[:campaign_source]   if Spree::GoogleBase::Config[:campaign_source].present?
+      params[:utm_medium]   = Spree::GoogleBase::Config[:campaign_medium]   if Spree::GoogleBase::Config[:campaign_medium].present?
+      params[:utm_term]     = Spree::GoogleBase::Config[:campaign_term]     if Spree::GoogleBase::Config[:campaign_term].present?
+      params[:utm_content]  = Spree::GoogleBase::Config[:campaign_content]  if Spree::GoogleBase::Config[:campaign_content].present?
+      params[:utm_campaign] = Spree::GoogleBase::Config[:campaign_name]     if Spree::GoogleBase::Config[:campaign_name].present?
+
+      params
     end
     
     def build_images(xml, variant)

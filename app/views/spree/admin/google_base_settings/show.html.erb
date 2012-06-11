@@ -8,6 +8,9 @@
   <% end %>
   <%= setting_presentation_row(:ftp_password, true) %>
   <%= setting_presentation_row(:enable_taxon_mapping) %>
+  <% [:campaign_source, :campaign_medium, :campaign_term, :campaign_content, :campaign_name].each do |setting| %>
+    <%= setting_presentation_row(setting) %>
+  <% end %>
 </table>
 
 <p>

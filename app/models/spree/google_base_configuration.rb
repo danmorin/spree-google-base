@@ -7,5 +7,10 @@ module Spree
     preference :ftp_username, :string, :default => ''
     preference :ftp_password, :password, :default => ''
     preference :enable_taxon_mapping, :boolean, :default => false
+    preference :campaign_source, :string, :default => 'google product search'
+    preference :campaign_medium, :string, :default => 'organic'
+    preference :campaign_term, :string, :default => ''
+    preference :campaign_content, :string, :default => ''
+    preference :campaign_name, :string, :default => 'google product search'
   end
 end
