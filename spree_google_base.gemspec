@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency('spree', '~> 1.0')
   
-  s.add_development_dependency 'rspec-rails',  '~> 2.7'
+  s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'sqlite3'
-  s.add_development_dependency 'factory_girl', '~> 2.6'
+  s.add_development_dependency 'factory_girl'
 end
